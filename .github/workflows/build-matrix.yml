@@ -20,6 +20,12 @@ jobs:
       - uses: actions/checkout@v5
         with:
           ref: a6164ed0794b645d6923770c4f94c23c735872fd
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev \
+            libssl-dev libnm-dev patchelf
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:
