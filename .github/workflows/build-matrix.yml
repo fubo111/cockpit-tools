@@ -7,7 +7,27 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  rust-tests:
+    if: github.repository == 'fubo111/cockpit-tools'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      CARGO_TERM_COLOR: always
+      CARGO_BUILD_JOBS: 2
+      CARGO_INCREMENTAL: 0
+      CARGO_PROFILE_DEV_DEBUG: 0
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: a6164ed0794b645d6923770c4f94c23c735872fd
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: codex-fast-rust-tests
+      - name: Run startup readiness and enhancement Rust tests
+        run: cargo test --locked -p cockpit-tools --lib modules::codex_app_enhancements
+
+  windows-package:
     if: github.repository == 'fubo111/cockpit-tools'
     runs-on: windows-latest
     timeout-minutes: 90
@@ -34,8 +54,6 @@ jobs:
         run: npm run build
       - name: Run existing startup JavaScript regressions
         run: node --experimental-vm-modules --test src-tauri/src/modules/codex_app_enhancements/service_rspack.test.cjs src-tauri/src/modules/codex_app_enhancements/browser_preload_guard.test.cjs src-tauri/src/modules/codex_app_enhancements/startup_preload.test.cjs
-      - name: Run startup readiness and enhancement Rust tests
-        run: cargo test --locked -p cockpit-tools --lib modules::codex_app_enhancements
       - name: Build Windows app with embedded frontend
         run: npx tauri build --ci --debug --no-bundle
       - name: Package test app with runtime resources
