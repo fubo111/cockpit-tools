@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: a6164ed0794b645d6923770c4f94c23c735872fd
+          ref: 119e628
       - name: Install Linux build dependencies
         run: |
           sudo apt-get update
@@ -45,7 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: a6164ed0794b645d6923770c4f94c23c735872fd
+          ref: 119e628
       - uses: actions/setup-node@v5
         with:
           node-version: 22
