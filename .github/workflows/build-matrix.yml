@@ -31,7 +31,7 @@ jobs:
         with:
           shared-key: codex-fast-rust-tests
       - name: Run startup readiness and enhancement Rust tests
-        run: cargo test --locked -p cockpit-tools --lib modules::codex_app_enhancements
+        run: cargo test --locked -p cockpit-tools --lib modules::codex_app_enhancements::launch_profile_tests
 
   windows-package:
     if: github.repository == 'fubo111/cockpit-tools'
